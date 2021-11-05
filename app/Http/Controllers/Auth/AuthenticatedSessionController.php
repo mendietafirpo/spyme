@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Entryuser;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -33,14 +35,47 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if (!session('idRole')){
-            $idRole = DB::table('role_user')
-            ->where('user_id','=',Auth::user()->id)
-            ->get()->first()->role_id;
-            session()->put('idRole',$idRole);
-        }
+        $app = DB::table('role_user')
+        ->where('user_id','=',Auth::user()->id)
+        ->where('app','=',2)
+        ->get();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+
+        $roletable = DB::table('role_user')
+        ->where('user_id','=',Auth::user()->id)
+        ->get();
+
+        foreach ($roletable as $id){
+            $idRole = $id->role_id;
+        }
+        session()->put('idRole',$idRole);
+
+        if ($idRole==1)
+            {
+                return redirect()->intended(RouteServiceProvider::HOME);
+            } else
+            {
+                if ($app)
+                {
+                    $entryuser = new Entryuser();
+                    $entryuser -> idUser = Auth::user()->id;
+                    $entryuser -> app_id = 2;
+                    $entryuser -> save();
+
+                    return redirect()->intended(RouteServiceProvider::HOME);
+                } else
+                {
+                    Auth::guard('web')->logout();
+
+                    $request->session()->invalidate();
+
+                    $request->session()->regenerateToken();
+
+                    throw ValidationException::withMessages([
+                        'password' => __('auth.password'),
+                    ]);
+                }
+            }
     }
 
     /**

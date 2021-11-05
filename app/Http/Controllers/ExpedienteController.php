@@ -18,11 +18,12 @@ class ExpedienteController extends Controller
     {
         session()->put('idProy', $id);
 
+        $go=-1;
         $expediente = Expediente::where('idProy', $id)->first();
 
         if(isset($expediente)){
 
-            return view('expedientes.show', compact('expediente'));
+            return view('expedientes.show', compact('expediente','go'));
         }
         else{
 
@@ -30,6 +31,32 @@ class ExpedienteController extends Controller
 
         }
     }
+
+    public function cargaexpte(Request $request){
+        $idProy = $request->input('idProy');
+        if ($idProy){
+
+            $expte = Expediente::create($request->all());
+            $expte->save();
+
+
+            return redirect()->route('pymes.cargatramite');
+
+        }else {
+            $operatoria = Expediente::orderBy('operatoriaPrograma')->pluck('operatoriaPrograma')->unique();
+            $banco = Expediente::orderBy('agenteFinanciero')->pluck('agenteFinanciero')->unique();
+            $sucursal = Expediente::orderBy('sucursalVentanilla')->pluck('sucursalVentanilla')->unique();
+            $tecnico = Expediente::orderBy('evaluadorTecnico')->pluck('evaluadorTecnico')->unique();
+            $fuenteFds = Expediente::orderBy('entidadFuenteDeFondos')->pluck('entidadFuenteDeFondos')->unique();
+
+            $idProy = session('idProy');
+            $idLast= Expediente::max('id') + 1;
+
+            return view('pymes.cargaexpte', compact('idLast','idProy','operatoria','banco','sucursal','tecnico','fuenteFds'));
+        }
+
+    }
+
 
     public function create()
     {
@@ -49,8 +76,9 @@ class ExpedienteController extends Controller
             $expediente = Expediente::create($request->all());
             $expediente->save();
 
-                return redirect('/proyectos/proyecto/'.session('idFirma'))
-                ->with('success','Se agregó el expediente correctamente.');
+            $go=-4;
+            return view('expedientes.show', compact('expediente','go'))
+            ->with('success','Se agregó el expediente correctamente.');
     }
 
     public function edit($id)
@@ -61,7 +89,6 @@ class ExpedienteController extends Controller
         $sucursal = Expediente::orderBy('sucursalVentanilla')->pluck('sucursalVentanilla')->unique();
         $tecnico = Expediente::orderBy('evaluadorTecnico')->pluck('evaluadorTecnico')->unique();
         $expediente = Expediente::where('idProy', $id)->first();
-
 
         return view('expedientes.edit',compact('expediente','operatoria','banco','sucursal','tecnico'));
 
@@ -74,8 +101,9 @@ class ExpedienteController extends Controller
 
         $expediente->update($request->all());
 
-            return redirect('/expedientes.show/'.$id)
-            ->with('success','Se modificó el expediente correctamente');
+        $go=-3;
+        return view('expedientes.show', compact('expediente','go'))
+        ->with('success','Se modificó el expediente correctamente');
     }
 
     public function destroy(Expediente $expediente)

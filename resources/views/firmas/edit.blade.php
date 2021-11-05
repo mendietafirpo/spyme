@@ -157,7 +157,7 @@ use Carbon\Carbon;
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-              <button type="submit" onclick="confirmar()" class="btn btn-primary">Realizar cabios</button>
+              <button type="submit" onclick="confirmar()" class="btn btn-primary">Realizar cambios</button>
             </div>
         </div>
     </form>

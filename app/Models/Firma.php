@@ -83,47 +83,32 @@ class Firma extends Model
         'email_op',
         ];
 
-        public function scopeAppfirma($query)
-        {
-            return $query->where('app_id','=','1');
+        //static - where
+
+        public static function dptos($dpto) {
+
+            if($dpto)
+
+            return static::where('departamento','=',$dpto);
         }
 
-        public function scopeCuit($query,$cuit)
+        public static function cuits($cuit)
         {
             if ($cuit)
-                return $query->where('cuit', 'LIKE', "%$cuit%");
+                return static::where('cuit', 'LIKE', "%$cuit%");
         }
 
-        public function scopeFjur($query,$fjur)
-        {
-            if ($fjur)
-                return $query->where('FormaJuridica', '=', "$fjur");
-        }
-
-        public function scopeRazonSocial($query,$rSocial)
+        public static function rsocs($rSocial)
         {
             if($rSocial)
-                return $query->where('razonSocial', 'LIKE', "%$rSocial%");
+                return static::where('razonSocial', 'LIKE', "%$rSocial%");
 
         }
 
-        public function scopeCiudad($query,$ciudad)
+        public static function locs($ciudad)
         { if($ciudad)
-                return $query->where('ciudad', 'LIKE', "%$ciudad%");
+                return static::where('ciudad', 'LIKE', "%$ciudad%");
 
-        }
-
-
-        public function scopeIdFirma($query,$idFirma)
-        {
-            if ($idFirma)
-                return $query->where('idFirma', $idFirma);
-        }
-
-
-        public function scopeDateBetween($query, $desde, $hasta) {
-
-            return $query->whereBetween('created_at', [$desde, $hasta]);
         }
 
 }

@@ -9,7 +9,7 @@
 @include('layouts.main')
 <!--encabezado-->
 <div class="grid grid-cols-1 w-3/4 h-1/6 flex flex-wrap content-start mx-2 my-2">
-<div class="bg-red-200 text-center w-3/7 h-1/8"> Uso exclusivo para integrantes de la ueperios </div>
+<div class="bg-red-200 text-danger text-center w-3/7 h-1/8"> Uso exclusivo para integrantes de la ueperios </div>
 <!--<div class="bg-white-200 text-center w-3/7 h-1/8"> /// </div>
 <div class="bg-blue-200 text-center w-3/7 h-1/8"> Argentina </div>-->
 </div>

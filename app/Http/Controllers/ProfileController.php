@@ -38,6 +38,7 @@ class ProfileController extends Controller
         // Get current user
         $user = User::findOrFail(auth()->user()->id);
         // Set user name
+
         $user->name = $request->input('name');
         $user->telefono = $request->input('telefono');
         $user->direccion = $request->input('direccion');

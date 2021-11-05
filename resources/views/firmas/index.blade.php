@@ -49,9 +49,6 @@
                     </button>
 
                 </td>
-                <td>
-                <a class="btn btn-danger ml-16 pull-left" href="{{ route('firmas.create') }}"> Nueva firma</a>
-                </td>
             </tr>
             </form>
     </table>
@@ -62,32 +59,39 @@
             <th>Cuit</th>
             <th>Razón social</th>
             <th>Localidad</th>
-            <th width="280px">Panel de controles</th>
+            <th>Apps</th>
+            <th width="180px">Panel de controles</th>
+            <th><a class="btn btn-danger ml-2 pull-left" href="{{ route('firmas.create') }}"> Nueva firma</a></th>
         </tr>
         @foreach ($firmas as $firma)
         <tr @if ($loop->even) class="bg-gray-200" @endif>
         <td>{{ ++$i }}</td></div>
            <td> <a class="text-blue-400 underline" title="ir a personas humanas vinculadas a esta firma" href="{{ route('personas.irpersona',$firma->idFirma) }}">{{ $firma->cuit }}</a></td>
-           <td>{{ $firma->razonSocial }}</td>
+           <td> <a class="text-blue-400 underline" title="información detallada de la firma" href="{{ route('firmas.show',$firma->idFirma) }}">{{ $firma->razonSocial }} </a></td>
            <td>{{ $firma->ciudad }}</td>
+           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+
+                @foreach($app as $firma_idFirma => $ap)
+                    @if ($firma_idFirma==$firma->idFirma)
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            {{ $ap }}
+                        </span>
+                    @endif
+                @endforeach
+            </td>
            <td>
                 <form action="{{ route('firmas.destroy',$firma->idFirma) }}" method="POST">
-
-                    <a class="btn btn-success h-9" title="información detallada de la firma" href="{{ route('firmas.show',$firma->idFirma) }}"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg></a>
                     <!--<a class="btn btn-warning h-9" href="{{ route('firmas.edit',$firma->idFirma) }}"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></a>-->
           <!--  @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>-->
                     &nbsp
-                    &nbsp
                     <a href="{{ route('proyectos.irproyecto',$firma->idFirma) }}" class="btn btn-success">Proyecto</a>
-                    <a href="{{ route('balances.irmb',$firma->idFirma) }}" class="btn btn-info">Mmbb</a>
-
                 </form>
             </td>
             <td>
-                <form action="{{ route('firmas.addapp',$firma->idFirma) }}" method="PUT">
-                    <button type="submit" class="btn btn-danger">Add app</button>
+                <form action="{{ route('firmas.addapp',$firma->idFirma) }}" method="PUT"action="{{ route('proyectos.irproyecto',$firma->idFirma) }}" onClick="return confirm('Confirmar anexar firma si aún no se cargó o eliminar si ya existe en SPYME');">
+                    <button type="submit" class="btn btn-primary">Add/elim app</button>
                 </form>
             </td>
         </tr>

@@ -13,10 +13,17 @@
     <div class="bg-gray-200 ml-4 w-3/4 px-2 py-2">
         <form method="POST" action="{{ route('usuarios.store') }}">
             @csrf
+
             <!-- Name -->
             <div>
-                <label for="name" :value="__('Name')">Nombre mmm</label>
+                <label for="name" :value="__('Name')">Nombre</label>
                 <input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+            </div>
+
+            <!-- Username -->
+            <div>
+                <label for="username" :value="__('username')">Username</label>
+                <input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus />
             </div>
 
             <!-- Email Address -->

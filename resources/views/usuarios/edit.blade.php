@@ -18,6 +18,15 @@
                     @method('put')
                     <div class="shadow overflow-hidden sm:rounded-md">
                         <div class="my-1 px-1 py-1 bg-gray-200 sm:p-1 w-3/4">
+                            <label for="username" class="block font-medium text-sm text-gray-700">Username</label>
+                            <input type="text" name="username" id="username" class="form-input rounded-md shadow-sm mt-1 block w-full"
+                                   value="{{ old('username', $user->username) }}" />
+                            @error('username')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="my-1 px-1 py-1 bg-gray-200 sm:p-1 w-3/4">
                             <label for="name" class="block font-medium text-sm text-gray-700">Name</label>
                             <input type="text" name="name" id="name" class="form-input rounded-md shadow-sm mt-1 block w-full"
                                    value="{{ old('name', $user->name) }}" />

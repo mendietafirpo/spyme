@@ -33,11 +33,10 @@ class PersonaController extends Controller
 
         if(isset($idPers)){
             $fprel = Firmapersonarel::pluck('descripcion','id');
-            $persona = Persona::whereHas('firmas',function($query) {
+            $personas = Persona::whereHas('firmas',function($query) {
                 $query->where('idFirma', '=', session('idFirma'));
             })
             ->get();
-
             return view('personas.socio', compact('personas','fprel'));
         }
         else{

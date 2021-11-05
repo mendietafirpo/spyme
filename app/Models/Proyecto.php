@@ -59,24 +59,43 @@ class Proyecto extends Model
         'nroMatricula',
 ];
 
-public function scopeNombreproyecto($query,$nombreProyecto)
+// static where
+
+public static function dpts($dpto) {
+
+    if($dpto)
+
+    return static::where('departamento','=',$dpto);
+}
+
+
+public static function sectores($sector) {
+
+    if($sector)
+
+    return static::where('ciiuG','=',$sector);
+}
+
+public static function proys($nombreProyecto)
 {
     if($nombreProyecto)
-        return $query->where('nombreProyecto', 'LIKE', "%$nombreProyecto%");
+        return static::where('nombreProyecto', 'LIKE', "%$nombreProyecto%");
 
 }
 
-public function scopeDestinofondos($query,$destinoFondos)
+public static function desfondos($destinoFondos)
 {
     if($destinoFondos)
-        return $query->where('destinoFondos', 'LIKE', "%$destinoFondos%");
+
+    return static::where('destinoFondos', 'LIKE', "%$destinoFondos%");
 
 }
 
-public function scopeMontototal($query,$montoTotal)
+public static function rangomontos($desdemonto, $hastamonto)
 {
-    if($montoTotal)
-        return $query->where('montoTotal', 'LIKE', "%$montoTotal%");
+    if($desdemonto || $hastamonto)
+
+    return static::where('montoTotal', '>=', $desdemonto)->where('montoTotal', '<=', $hastamonto);
 
 }
 

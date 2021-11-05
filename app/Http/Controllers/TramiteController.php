@@ -24,11 +24,12 @@ class TramiteController extends Controller
     {
         session()->put('idProy', $id);
 
+        $go=-1;
         $tramite = Tramite::where('idProy', $id)->first();
 
         if(isset($tramite)){
 
-            return view('tramites.show', compact('tramite'));
+            return view('tramites.show', compact('tramite','go'));
         }
         else{
 
@@ -36,6 +37,28 @@ class TramiteController extends Controller
 
         }
     }
+
+    public function cargatramite(Request $request){
+        $idProy = $request->input('idProy');
+        if ($idProy){
+
+            $tramite = Tramite::create($request->all());
+            $tramite->save();
+
+            return redirect('/pymes/mysmes/')
+            ->with('success','Se cargaron todos los datos correctamente');
+
+        }else {
+            $sujetocred = Tramite::orderBy('sujetoCredito')->pluck('sujetoCredito')->unique();
+
+            $idProy = session('idProy');
+            $idLast= Tramite::max('id') + 1;
+
+            return view('pymes.cargatramite', compact('idLast','idProy','sujetocred'));
+        }
+
+    }
+
 
     public function create()
     {
@@ -49,15 +72,15 @@ class TramiteController extends Controller
     {
             $tramite = Tramite::create($request->all());
             $tramite->save();
+            $go=-4;
 
-                return redirect('/tramites.show/'.$request->input('idProy'))
-                ->with('success','Se agregó el tramite correctamente.');
+            return view('tramites.show',compact('tramite','go'))
+            ->with('success','Se agregó el tramite correctamente.');
     }
 
     public function edit($id)
     {
         $tramite = Tramite::where('idProy', $id)->first();
-
         return view('tramites.edit',compact('tramite'));
 
     }
@@ -68,8 +91,9 @@ class TramiteController extends Controller
         $tramite = Tramite::where('idProy', $id)->first();
 
         $tramite->update($request->all());
-
-            return redirect('/tramites.show/'.$id)
+        $go=-3;
+            //return redirect('/tramites.show/'.$id,compact('go'))
+            return view('tramites.show',compact('tramite','go'))
             ->with('success','Se modificó el tramite correctamente');
     }
 

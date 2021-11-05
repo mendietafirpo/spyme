@@ -16,10 +16,10 @@ use Carbon\Carbon;
      <table class="bg-green-100 w-11/12">
             <form class="navbar-form navbar-left" role="Search">
                 <td>
-                <a class="btn btn-warning ml-16 pull-left" href="{{ route('proyectos.create') }}"> Nuevo proyecto</a>
+                <a class="btn btn-warning ml-16 pull-left" href="{{ route('pymes.cargaproyecto') }}"> Nuevo proyecto</a>
                 &nbsp
                 &nbsp
-                <a href="javascript: history.go(-1)" class="btn btn-primary pull-right"> Volver</a>
+                <a href="javascript: history.go({{ $go }})" class="btn btn-primary pull-right"> Volver</a>
                 </td>
             </tr>
             </form>
@@ -48,8 +48,8 @@ use Carbon\Carbon;
                 <form action="{{ route('proyectos.show',$proyecto->idProy) }}" method="POST">
 
                     <a class="btn btn-info" title="presupuesto de inversión" href="{{ route('presupuestos.irpresup',$proyecto->idProy) }}">Presup</a>
-                    <a class="btn btn-success" title="info del trámite" href="{{ route('tramites.show',$proyecto->idProy) }}"> Tramite</a>
-                    <a class="btn btn-success" title="info del expediente" href="{{ route('expedientes.show',$proyecto->idProy) }}"> Expte</a>
+                    <a class="btn btn-success" title="info del trámite" href="{{ route('tramites.irtramite',$proyecto->idProy) }}"> Tramite</a>
+                    <a class="btn btn-success" title="info del expediente" href="{{ route('expedientes.irexpte',$proyecto->idProy) }}"> Expte</a>
 
                 <!--    @csrf
                     @method('DELETE')

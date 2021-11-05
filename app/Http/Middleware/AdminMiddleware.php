@@ -19,12 +19,8 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $idRole = DB::table('role_user')
-        ->where('user_id','=',Auth::user()->id)
-        ->get()->first()->role_id;
-        session()->put('idRole', $idRole);
 
-        if ($idRole==1){
+        if (session('idRole')==1){
             return $next($request);
         }
         else {

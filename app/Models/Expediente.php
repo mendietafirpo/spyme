@@ -35,5 +35,12 @@ class Expediente extends Model
         'prioridadAsignada'
 ];
 
+    //scopes static
+    public static function operaexpte($operatoria) {
+
+        if($operatoria)
+
+        return static::where('operatoriaPrograma','=',$operatoria);
+    }
 
  }
